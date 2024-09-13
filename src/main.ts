@@ -30,6 +30,7 @@ const run = async (): Promise<void> => {
     } else {
       core.info(`\n\nDatadog Synthetics tests succeeded: ${printSummary(summary, config)}`)
     }
+    core.setOutput('batchUrl', synthetics.utils.getBatchUrl(synthetics.utils.getAppBaseURL(config), summary.batchId))
   } catch (error) {
     synthetics.utils.reportExitLogs(reporter, config, {error})
 

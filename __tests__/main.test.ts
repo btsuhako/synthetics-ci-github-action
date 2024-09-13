@@ -246,6 +246,22 @@ describe('Run Github Action', () => {
       await run()
       expect(setFailedMock).not.toHaveBeenCalled()
     })
+
+    test('GitHub Action sets correct output values', async () => {
+      const setOutputMock = jest.spyOn(core, 'setOutput')
+
+      jest.spyOn(synthetics, 'executeTests').mockResolvedValue({
+        results: [],
+        summary: {...EMPTY_SUMMARY, passed: 1},
+      })
+
+      await run()
+
+      expect(setOutputMock).toHaveBeenCalledWith(
+        'batchUrl',
+        'https://app.datadoghq.com/synthetics/explorer/ci?batchResultId=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
+      )
+    })
   })
 
   describe('Github Action execution', () => {
